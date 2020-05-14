@@ -1,5 +1,6 @@
 package fr.pederobien.dictionary.interfaces;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 
 public interface IDictionaryParser {
@@ -9,6 +10,8 @@ public interface IDictionaryParser {
 	 * 
 	 * @param path The path to the dictionary file.
 	 * @return A dictionary.
+	 * 
+	 * @throws FileNotFoundException If the path does not represent a file.
 	 */
-	IDictionary parse(Path path);
+	IDictionary parse(Path path) throws FileNotFoundException;
 }

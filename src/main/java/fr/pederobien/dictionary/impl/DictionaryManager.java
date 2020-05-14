@@ -1,5 +1,6 @@
 package fr.pederobien.dictionary.impl;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Locale;
@@ -45,14 +46,14 @@ public class DictionaryManager implements IDictionaryManager {
 	}
 
 	@Override
-	public IDictionary register(IDictionaryParser parser, Path path) {
+	public IDictionary register(IDictionaryParser parser, Path path) throws FileNotFoundException {
 		IDictionary dictionary = parser.parse(path);
 		register(dictionary);
 		return dictionary;
 	}
 
 	@Override
-	public IDictionary register(Path path) {
+	public IDictionary register(Path path) throws FileNotFoundException {
 		if (parser == null)
 			return null;
 		return register(parser, path);

@@ -1,5 +1,6 @@
 package fr.pederobien.dictionary.interfaces;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 
 public interface IDictionaryContext {
@@ -30,8 +31,10 @@ public interface IDictionaryContext {
 	 * @param path   The path to the dictionary file.
 	 * 
 	 * @return This parsed dictionary.
+	 * 
+	 * @throws FileNotFoundException If the path does not represent a file.
 	 */
-	IDictionary register(IDictionaryParser parser, Path path);
+	IDictionary register(IDictionaryParser parser, Path path) throws FileNotFoundException;
 
 	/**
 	 * Parse the file associated to the given path using the parser specified by {@link #setParser(IDictionaryParser)}. If any parser
@@ -40,8 +43,10 @@ public interface IDictionaryContext {
 	 * @param path The path to the dictionary file.
 	 * 
 	 * @return The parsed dictionary if a parser has been furnished, null otherwise.
+	 * 
+	 * @throws FileNotFoundException If the path does not represent a file.
 	 */
-	IDictionary register(Path path);
+	IDictionary register(Path path) throws FileNotFoundException;
 
 	/**
 	 * Unregister the given dictionary for the given plugin. If this dictionary is already concatenated to another one, then only its
