@@ -63,7 +63,7 @@ public class DictionaryManager implements IDictionaryManager {
 			} catch (MessageNotFoundException e1) {
 				throw new SecondTryMessageNotFoundException(event, dictionary, secondDictionary, event.getLocale(), Locale.ENGLISH);
 			} catch (NullPointerException e1) {
-				throw new AnyRegisteredDictionaryException(MessageEvent.of(Locale.ENGLISH, event.getCode(), event.getArgs()));
+				throw new AnyRegisteredDictionaryException(new MessageEvent(Locale.ENGLISH, event.getCode(), event.getArgs()));
 			}
 		} catch (NullPointerException e) {
 			throw new AnyRegisteredDictionaryException(event);

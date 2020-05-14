@@ -11,12 +11,6 @@ public class MessageEvent implements IMessageEvent {
 	private IMessageCode code;
 	private String[] args;
 
-	private MessageEvent(Locale locale, IMessageCode code, String[] args) {
-		this.locale = locale;
-		this.code = code;
-		this.args = args;
-	}
-
 	/**
 	 * Create a message event. This event is used to be send to a dictionary to get the translation associated to the given code.
 	 * 
@@ -26,8 +20,10 @@ public class MessageEvent implements IMessageEvent {
 	 * 
 	 * @return A message event based on the given parameter.
 	 */
-	public static IMessageEvent of(Locale locale, IMessageCode code, String[] args) {
-		return new MessageEvent(locale, code, args);
+	public MessageEvent(Locale locale, IMessageCode code, String[] args) {
+		this.locale = locale;
+		this.code = code;
+		this.args = args;
 	}
 
 	@Override
