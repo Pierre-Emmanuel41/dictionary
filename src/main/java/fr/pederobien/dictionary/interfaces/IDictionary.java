@@ -5,8 +5,9 @@ import java.util.Locale;
 
 import fr.pederobien.dictionary.exceptions.MessageNotFoundException;
 import fr.pederobien.dictionary.exceptions.NotEnoughArgumentsException;
+import fr.pederobien.persistence.interfaces.IUnmodifiableNominable;
 
-public interface IDictionary {
+public interface IDictionary extends IUnmodifiableNominable {
 
 	/**
 	 * @return All locales supported by this dictionary. All locales should correspond to the same language. For instance :
