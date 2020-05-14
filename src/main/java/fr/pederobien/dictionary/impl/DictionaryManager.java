@@ -1,5 +1,6 @@
 package fr.pederobien.dictionary.impl;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -11,14 +12,22 @@ import fr.pederobien.dictionary.exceptions.SecondTryMessageNotFoundException;
 import fr.pederobien.dictionary.interfaces.IDictionary;
 import fr.pederobien.dictionary.interfaces.IDictionaryContext;
 import fr.pederobien.dictionary.interfaces.IDictionaryManager;
+import fr.pederobien.dictionary.interfaces.IDictionaryParser;
 import fr.pederobien.dictionary.interfaces.IMessage;
 import fr.pederobien.dictionary.interfaces.IMessageEvent;
 
 public class DictionaryManager implements IDictionaryManager {
 	private Map<Locale, IDictionary> dictionaries;
+	private IDictionaryParser parser;
 
 	public DictionaryManager() {
 		dictionaries = new HashMap<Locale, IDictionary>();
+	}
+
+	@Override
+	public IDictionaryContext setParser(IDictionaryParser parser) {
+		this.parser = parser;
+		return this;
 	}
 
 	@Override
@@ -33,6 +42,20 @@ public class DictionaryManager implements IDictionaryManager {
 				dictionaries.put(locale, dictionary);
 		}
 		return this;
+	}
+
+	@Override
+	public IDictionary register(IDictionaryParser parser, Path path) {
+		IDictionary dictionary = parser.parse(path);
+		register(dictionary);
+		return dictionary;
+	}
+
+	@Override
+	public IDictionary register(Path path) {
+		if (parser == null)
+			return null;
+		return register(parser, path);
 	}
 
 	@Override
