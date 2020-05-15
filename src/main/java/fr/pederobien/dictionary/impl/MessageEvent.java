@@ -20,7 +20,7 @@ public class MessageEvent implements IMessageEvent {
 	 * 
 	 * @return A message event based on the given parameter.
 	 */
-	public MessageEvent(Locale locale, IMessageCode code, Object[] args) {
+	public MessageEvent(Locale locale, IMessageCode code, Object... args) {
 		this.locale = locale;
 		this.code = code;
 		this.args = args;
