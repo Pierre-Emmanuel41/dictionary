@@ -2,6 +2,9 @@ package fr.pederobien.dictionary.interfaces;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 public interface IDictionaryContext {
 
@@ -57,4 +60,19 @@ public interface IDictionaryContext {
 	 * @return This dictionary context to unregister dictionaries easier.
 	 */
 	IDictionaryContext unregister(IDictionary dictionary);
+
+	/**
+	 * Get the dictionary associated to the given {@link Locale}.
+	 * 
+	 * @param locale The locale used as key to get a dictionary.
+	 * 
+	 * @return An optional that contains a dictionary if there is a registered dictionary for The given locale, an empty optional
+	 *         otherwise.
+	 */
+	Optional<IDictionary> getDictionary(Locale locale);
+
+	/**
+	 * @return An unmodifiable map that contains all registered dictionaries for this context.
+	 */
+	Map<Locale, IDictionary> getDictionaries();
 }

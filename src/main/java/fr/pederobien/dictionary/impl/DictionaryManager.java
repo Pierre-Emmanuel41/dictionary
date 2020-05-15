@@ -2,9 +2,11 @@ package fr.pederobien.dictionary.impl;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 import fr.pederobien.dictionary.exceptions.AnyRegisteredDictionaryException;
 import fr.pederobien.dictionary.exceptions.DictionaryNotFoundException;
@@ -18,11 +20,12 @@ import fr.pederobien.dictionary.interfaces.IMessage;
 import fr.pederobien.dictionary.interfaces.IMessageEvent;
 
 public class DictionaryManager implements IDictionaryManager {
-	private Map<Locale, IDictionary> dictionaries;
+	private Map<Locale, IDictionary> dictionaries, unmodifiableDictionaries;
 	private IDictionaryParser parser;
 
 	public DictionaryManager() {
 		dictionaries = new HashMap<Locale, IDictionary>();
+		unmodifiableDictionaries = Collections.unmodifiableMap(dictionaries);
 	}
 
 	@Override
@@ -39,8 +42,10 @@ public class DictionaryManager implements IDictionaryManager {
 			if (localDictionary != null)
 				for (IMessage message : dictionary.getMessages())
 					localDictionary.register(message);
-			else
+			else {
 				dictionaries.put(locale, dictionary);
+				unmodifiableDictionaries = Collections.unmodifiableMap(dictionaries);
+			}
 		}
 		return this;
 	}
@@ -68,8 +73,24 @@ public class DictionaryManager implements IDictionaryManager {
 
 			for (IMessage message : dictionary.getMessages())
 				localDictionary.unregister(message.getCode());
+			
+			if (localDictionary.getMessages().isEmpty()) {
+				dictionaries.remove(locale);
+				unmodifiableDictionaries = Collections.unmodifiableMap(dictionaries);
+			}
 		}
 		return this;
+	}
+	
+	@Override
+	public Optional<IDictionary> getDictionary(Locale locale) {
+		IDictionary dictionary = dictionaries.get(locale);
+		return dictionary == null ? Optional.empty() : Optional.of(dictionary);
+	}
+	
+	@Override
+	public Map<Locale, IDictionary> getDictionaries() {
+		return unmodifiableDictionaries;
 	}
 
 	@Override
