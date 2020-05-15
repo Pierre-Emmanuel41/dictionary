@@ -9,7 +9,7 @@ import fr.pederobien.dictionary.interfaces.IMessageEvent;
 public class MessageEvent implements IMessageEvent {
 	private Locale locale;
 	private IMessageCode code;
-	private String[] args;
+	private Object[] args;
 
 	/**
 	 * Create a message event. This event is used to be send to a dictionary to get the translation associated to the given code.
@@ -20,7 +20,7 @@ public class MessageEvent implements IMessageEvent {
 	 * 
 	 * @return A message event based on the given parameter.
 	 */
-	public MessageEvent(Locale locale, IMessageCode code, String[] args) {
+	public MessageEvent(Locale locale, IMessageCode code, Object[] args) {
 		this.locale = locale;
 		this.code = code;
 		this.args = args;
@@ -37,7 +37,7 @@ public class MessageEvent implements IMessageEvent {
 	}
 
 	@Override
-	public String[] getArgs() {
+	public Object[] getArgs() {
 		return args;
 	}
 
@@ -47,8 +47,8 @@ public class MessageEvent implements IMessageEvent {
 		joiner.add("{Locale=" + locale + "}");
 		joiner.add("{Code=" + getCode() + "}");
 		StringJoiner joinerBis = new StringJoiner(" ", "{Args={", "}}");
-		for (String arg : getArgs())
-			joinerBis.add(arg);
+		for (Object arg : getArgs())
+			joinerBis.add(arg.toString());
 		return joiner.add(joinerBis.toString()).toString();
 	}
 }

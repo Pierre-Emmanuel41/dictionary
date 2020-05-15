@@ -19,5 +19,5 @@ public interface IMessageEvent {
 	/**
 	 * @return An array of arguments used for {@link IMessage#getMessage(String...)}.
 	 */
-	String[] getArgs();
+	Object[] getArgs();
 }

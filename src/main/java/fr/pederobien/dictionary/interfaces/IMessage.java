@@ -15,5 +15,5 @@ public interface IMessage {
 	 * 
 	 * @return The message associated to the key.
 	 */
-	String getMessage(String... args);
+	String getMessage(Object... args);
 }

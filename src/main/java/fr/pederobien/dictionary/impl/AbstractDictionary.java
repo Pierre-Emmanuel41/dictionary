@@ -22,7 +22,7 @@ public class AbstractDictionary implements IDictionary {
 	private Map<IMessageCode, IMessage> messages;
 	private List<IMessage> messageValues;
 
-	protected AbstractDictionary(String name, Locale... locales) {
+	public AbstractDictionary(String name, Locale... locales) {
 		this.name = name;
 		this.locales = Arrays.asList(locales);
 		messages = new HashMap<IMessageCode, IMessage>();
