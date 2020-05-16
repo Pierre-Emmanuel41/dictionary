@@ -73,7 +73,7 @@ public class DictionaryManager implements IDictionaryManager {
 
 			for (IMessage message : dictionary.getMessages())
 				localDictionary.unregister(message.getCode());
-			
+
 			if (localDictionary.getMessages().isEmpty()) {
 				dictionaries.remove(locale);
 				unmodifiableDictionaries = Collections.unmodifiableMap(dictionaries);
@@ -81,13 +81,13 @@ public class DictionaryManager implements IDictionaryManager {
 		}
 		return this;
 	}
-	
+
 	@Override
 	public Optional<IDictionary> getDictionary(Locale locale) {
 		IDictionary dictionary = dictionaries.get(locale);
 		return dictionary == null ? Optional.empty() : Optional.of(dictionary);
 	}
-	
+
 	@Override
 	public Map<Locale, IDictionary> getDictionaries() {
 		return unmodifiableDictionaries;
