@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
@@ -42,15 +44,20 @@ public class AbstractDictionary implements IDictionary {
 
 	@Override
 	public String getMessage(IMessageEvent event) {
-		IMessage message = messages.get(event.getCode());
-		if (message == null)
-			throw new MessageNotFoundException(event, this);
-
-		try {
-			return message.getMessage(event.getArgs());
-		} catch (IndexOutOfBoundsException e) {
-			throw new NotEnoughArgumentsException(event, this, message);
+		Iterator<Entry<IMessageCode, IMessage>> iterator = messages.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry<IMessageCode, IMessage> entry = iterator.next();
+			if (entry.getKey().equals(event.getCode())) {
+				try {
+					return entry.getValue().getMessage(event.getArgs());
+				} catch (IndexOutOfBoundsException e) {
+					throw new NotEnoughArgumentsException(event, this, entry.getValue());
+				}
+			}
 		}
+
+		// When any messages is registered for the code
+		throw new MessageNotFoundException(event, this);
 	}
 
 	@Override
