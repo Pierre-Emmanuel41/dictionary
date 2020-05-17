@@ -1,5 +1,6 @@
 package fr.pederobien.dictionary.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ public class AbstractDictionary implements IDictionary {
 		this.name = name;
 		this.locales = Arrays.asList(locales);
 		messages = new HashMap<IMessageCode, IMessage>();
+		messageValues = new ArrayList<IMessage>();
 	}
 
 	@Override
