@@ -14,16 +14,15 @@ import fr.pederobien.dictionary.exceptions.MessageNotFoundException;
 import fr.pederobien.dictionary.exceptions.SecondTryMessageNotFoundException;
 import fr.pederobien.dictionary.interfaces.IDictionary;
 import fr.pederobien.dictionary.interfaces.IDictionaryContext;
-import fr.pederobien.dictionary.interfaces.IDictionaryManager;
 import fr.pederobien.dictionary.interfaces.IDictionaryParser;
 import fr.pederobien.dictionary.interfaces.IMessage;
 import fr.pederobien.dictionary.interfaces.IMessageEvent;
 
-public class DictionaryManager implements IDictionaryManager {
+public class DictionaryContext implements IDictionaryContext {
 	private Map<Locale, IDictionary> dictionaries, unmodifiableDictionaries;
 	private IDictionaryParser parser;
 
-	public DictionaryManager() {
+	public DictionaryContext() {
 		dictionaries = new HashMap<Locale, IDictionary>();
 		unmodifiableDictionaries = Collections.unmodifiableMap(dictionaries);
 	}

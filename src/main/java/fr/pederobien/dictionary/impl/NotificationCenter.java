@@ -1,14 +1,13 @@
 package fr.pederobien.dictionary.impl;
 
 import fr.pederobien.dictionary.interfaces.IDictionaryContext;
-import fr.pederobien.dictionary.interfaces.IDictionaryManager;
 import fr.pederobien.dictionary.interfaces.INotificationCenter;
 
 public class NotificationCenter implements INotificationCenter {
-	private IDictionaryManager dictionaryManager;
+	private IDictionaryContext dictionaryContext;
 
 	private NotificationCenter() {
-		dictionaryManager = new DictionaryManager();
+		dictionaryContext = new DictionaryContext();
 	}
 
 	public static INotificationCenter getInstance() {
@@ -21,6 +20,6 @@ public class NotificationCenter implements INotificationCenter {
 
 	@Override
 	public IDictionaryContext getDictionaryContext() {
-		return dictionaryManager;
+		return dictionaryContext;
 	}
 }
