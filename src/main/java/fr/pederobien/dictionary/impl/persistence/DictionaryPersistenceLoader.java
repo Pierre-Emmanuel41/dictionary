@@ -17,7 +17,12 @@ public class DictionaryPersistenceLoader extends AbstractXmlPersistenceLoader<ID
 	private IDictionary dictionary;
 
 	protected DictionaryPersistenceLoader() {
-		super(1.0, null);
+		super(1.0);
+	}
+
+	@Override
+	protected IDictionary create() {
+		return null;
 	}
 
 	@Override
