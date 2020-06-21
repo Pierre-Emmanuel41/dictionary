@@ -22,6 +22,6 @@ public class DictionaryNotFoundException extends MessageEventException {
 
 	@Override
 	public String getMessage() {
-		return "No Dictionary found associated to local " + getLocale();
+		return "No Dictionary found associated to locale " + getLocale();
 	}
 }
