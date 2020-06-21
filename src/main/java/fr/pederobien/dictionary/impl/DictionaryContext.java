@@ -8,7 +8,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
-import fr.pederobien.dictionary.exceptions.AnyRegisteredDictionaryException;
 import fr.pederobien.dictionary.exceptions.DictionaryNotFoundException;
 import fr.pederobien.dictionary.exceptions.MessageNotFoundException;
 import fr.pederobien.dictionary.exceptions.SecondTryMessageNotFoundException;
@@ -98,7 +97,7 @@ public class DictionaryContext implements IDictionaryContext {
 
 		try {
 			return dictionary.getMessage(event);
-		} catch (MessageNotFoundException | DictionaryNotFoundException e) {
+		} catch (MessageNotFoundException | NullPointerException e) {
 
 			// Dictionary that contains messages in English
 			IDictionary secondDictionary = dictionaries.get(Locale.ENGLISH);
@@ -107,10 +106,8 @@ public class DictionaryContext implements IDictionaryContext {
 			} catch (MessageNotFoundException e1) {
 				throw new SecondTryMessageNotFoundException(event, dictionary, secondDictionary, event.getLocale(), Locale.ENGLISH);
 			} catch (NullPointerException e1) {
-				throw new AnyRegisteredDictionaryException(new MessageEvent(Locale.ENGLISH, event.getCode(), event.getArgs()));
+				throw new DictionaryNotFoundException(new MessageEvent(Locale.ENGLISH, event.getCode(), event.getArgs()), Locale.ENGLISH);
 			}
-		} catch (NullPointerException e) {
-			throw new AnyRegisteredDictionaryException(event);
 		}
 	}
 }
