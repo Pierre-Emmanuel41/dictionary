@@ -26,6 +26,19 @@ public class MessageEvent implements IMessageEvent {
 		this.args = args;
 	}
 
+	/**
+	 * Create a message event. This event is used to be send to a dictionary to get the translation associated to the given code. The
+	 * default locale is {@link Locale#ENGLISH}.
+	 * 
+	 * @param code Used as key to get the right message in the right dictionary.
+	 * @param args Some arguments (optional) used for dynamic messages.
+	 * 
+	 * @return A message event based on the given parameter.
+	 */
+	public MessageEvent(IMessageCode code, Object... args) {
+		this(Locale.ENGLISH, code, args);
+	}
+
 	@Override
 	public Locale getLocale() {
 		return locale;
