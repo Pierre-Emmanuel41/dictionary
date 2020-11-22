@@ -18,7 +18,8 @@ public class DefaultDictionaryParser implements IDictionaryParser {
 	@Override
 	public IDictionary parse(Path path) throws FileNotFoundException {
 		persistence.setPath(path.getParent());
-		persistence.load(path.getFileName().toString());
+		String fileName = path.getFileName().toString();
+		persistence.load(fileName.substring(0, fileName.lastIndexOf('.')));
 		return persistence.get();
 	}
 }
