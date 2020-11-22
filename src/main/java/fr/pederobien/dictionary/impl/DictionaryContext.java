@@ -19,16 +19,17 @@ import fr.pederobien.dictionary.interfaces.IMessageEvent;
 
 public class DictionaryContext implements IDictionaryContext {
 	private Map<Locale, IDictionary> dictionaries, unmodifiableDictionaries;
-	private IDictionaryParser parser;
+	private IDictionaryParser parser, defaultParser;
 
 	public DictionaryContext() {
 		dictionaries = new HashMap<Locale, IDictionary>();
 		unmodifiableDictionaries = Collections.unmodifiableMap(dictionaries);
+		parser = defaultParser = new DefaultDictionaryParser();
 	}
 
 	@Override
 	public IDictionaryContext setParser(IDictionaryParser parser) {
-		this.parser = parser;
+		this.parser = parser == null ? defaultParser : parser;
 		return this;
 	}
 
@@ -57,8 +58,6 @@ public class DictionaryContext implements IDictionaryContext {
 
 	@Override
 	public IDictionary register(Path path) throws FileNotFoundException {
-		if (parser == null)
-			return null;
 		return register(parser, path);
 	}
 

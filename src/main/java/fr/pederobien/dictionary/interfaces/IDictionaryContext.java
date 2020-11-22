@@ -9,15 +9,19 @@ import java.util.Optional;
 import fr.pederobien.dictionary.exceptions.AnyRegisteredDictionaryException;
 import fr.pederobien.dictionary.exceptions.DictionaryNotFoundException;
 import fr.pederobien.dictionary.exceptions.SecondTryMessageNotFoundException;
+import fr.pederobien.dictionary.impl.DefaultDictionaryParser;
 
 public interface IDictionaryContext {
 
 	/**
-	 * Set the dictionary parser for this context. This parser is used to create a dictionary from a file.
+	 * Set the dictionary parser for this context. This parser is used to create a dictionary from a file. If the given parser is
+	 * null, then the parser is the default dictionary parser.
 	 * 
 	 * @param parser The parser used to create a dictionary.
 	 * 
 	 * @return This dictionary context to register dictionaries easier.
+	 * 
+	 * @see DefaultDictionaryParser
 	 */
 	IDictionaryContext setParser(IDictionaryParser parser);
 
@@ -44,8 +48,7 @@ public interface IDictionaryContext {
 	IDictionary register(IDictionaryParser parser, Path path) throws FileNotFoundException;
 
 	/**
-	 * Parse the file associated to the given path using the parser specified by {@link #setParser(IDictionaryParser)}. If any parser
-	 * has been furnished, the method do nothing.
+	 * Parse the file associated to the given path using the parser specified by {@link #setParser(IDictionaryParser)}.
 	 * 
 	 * @param path The path to the dictionary file.
 	 * 
