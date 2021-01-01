@@ -82,16 +82,16 @@ To get messages, wee need to use a <code>MessageEvent</code>. This event provide
 
 Now, to get a translated message, we simply need to call the method <code>getMessage(IMessageEvent event)</code> and display the result :
 
-```
-public static void main(String[] args) {
-		INotificationCenter center = NotificationCenter.getInstance();
-		try {
-			center.getDictionaryContext().register(Paths.get(Main.class.getResource("/DictionaryName.xml").toURI()));
-			System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_1)));
-		} catch (FileNotFoundException | URISyntaxException e) {
-			e.printStackTrace();
+```java
+	public static void main(String[] args) {
+			INotificationCenter center = NotificationCenter.getInstance();
+			try {
+				center.getDictionaryContext().register(Paths.get(Main.class.getResource("/DictionaryName.xml").toURI()));
+				System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_1)));
+			} catch (FileNotFoundException | URISyntaxException e) {
+				e.printStackTrace();
+			}
 		}
-	}
 ```
 
 The output for this program is the following line :
@@ -116,7 +116,7 @@ I bet you remark for the second message in the dictionary, I put a "%s". This is
 
 Here is the output :
 
-```java
+```
 	Dynamic Message : Hello world
 ```
 
