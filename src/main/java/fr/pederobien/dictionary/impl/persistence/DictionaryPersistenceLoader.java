@@ -27,17 +27,13 @@ public class DictionaryPersistenceLoader extends AbstractXmlPersistenceLoader<ID
 
 	@Override
 	public IXmlPersistenceLoader<IDictionary> load(Element root) {
-		// Getting dictionary's name
-		Node name = getElementsByTagName(root, DictionaryXmlTag.NAME).item(0);
-		String dictionaryName = name.getChildNodes().item(0).getNodeValue();
-
 		// Getting dictionary's locales
 		NodeList locales = getElementsByTagName(root, DictionaryXmlTag.LOCALE);
 		Locale[] dictionaryLocales = new Locale[locales.getLength()];
 		for (int i = 0; i < locales.getLength(); i++)
 			dictionaryLocales[i] = Locale.forLanguageTag(locales.item(i).getChildNodes().item(0).getNodeValue());
 
-		dictionary = new AbstractDictionary(dictionaryName, dictionaryLocales);
+		dictionary = new AbstractDictionary(dictionaryLocales);
 
 		// Getting dictionary's messages
 		NodeList messages = getElementsByTagName(root, DictionaryXmlTag.MESSAGE);

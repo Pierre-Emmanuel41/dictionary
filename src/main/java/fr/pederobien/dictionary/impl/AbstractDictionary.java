@@ -20,21 +20,14 @@ import fr.pederobien.dictionary.interfaces.IMessageCode;
 import fr.pederobien.dictionary.interfaces.IMessageEvent;
 
 public class AbstractDictionary implements IDictionary {
-	private String name;
 	private List<Locale> locales;
 	private Map<IMessageCode, IMessage> messages;
 	private List<IMessage> messageValues;
 
-	public AbstractDictionary(String name, Locale... locales) {
-		this.name = name;
+	public AbstractDictionary(Locale... locales) {
 		this.locales = Arrays.asList(locales);
 		messages = new HashMap<IMessageCode, IMessage>();
 		messageValues = new ArrayList<IMessage>();
-	}
-
-	@Override
-	public String getName() {
-		return name;
 	}
 
 	@Override
