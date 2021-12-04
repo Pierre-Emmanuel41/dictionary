@@ -1,7 +1,7 @@
-package fr.pederobien.dictionary.impl.persistence;
+package fr.pederobien.dictionary.impl;
 
 public enum DictionaryXmlTag {
-	LOCALES("locales"), LOCALE("locale"), MESSAGES("messages"), MESSAGE("message"), CODE("code"), MESSAGE_VALUE("value");
+	LOCALES("locales"), LOCALE("locale"), MESSAGES("messages"), MESSAGE("message"), MESSAGE_CODE("code"), MESSAGE_VALUE("value");
 
 	private String name;
 

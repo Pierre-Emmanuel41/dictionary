@@ -1,6 +1,6 @@
 # How to use this API
 
-This simple tool allows you to easily create, load, register and/or unregister dictionaries in which messages for users are stored. First we need a <code>NotificationCenter</code>. This object is mainly used to get access to the <code>dictionaryContext</code>. The dictionary context  allows to store dictionaries for different languages. Finally, a <code>Dictionary</code> stores messages for users according to their code. Thus, the dictionary context allows to know in which language the message must be translated and the code allows to know which is the associated translation.
+This simple tool allows you to easily create, load, register and/or unregister dictionaries in which messages for users are stored. First we need a <code>DictionaryContext</code>. This object allows to store dictionaries for different languages. Finally, a <code>Dictionary</code> stores messages for users according to their code. Thus, the dictionary context allows to know in which language the message must be translated and the code allows to know which is the associated translation.
 
 # Dictionary files
 
@@ -9,7 +9,6 @@ This API provides you the possibility to store dictionaries in files, to parse a
 ```xml
 	<?xml version="1.0" encoding="UTF-8"?>
 	<dictionary>
-		<name>English</name>
 		<version>1.0</version>
 		<locales>
 			<locale>en</locale>
@@ -38,9 +37,9 @@ Then to parse the dictionary file, you simply need to register a dictionary usin
 
 ```java
 	public static void main(String[] args) {
-		INotificationCenter center = NotificationCenter.getInstance();
+		IDictionaryContext context = DictionaryContext.getInstance();
 		try {
-			center.getDictionaryContext().register(Paths.get(Main.class.getResource("/DictionaryName.xml").toURI()));
+			context.register(Paths.get(Main.class.getResource("/DictionaryName.xml").toURI()));
 			System.out.println(center.getDictionaryContext().getDictionary(Locale.ENGLISH).get());
 		} catch (FileNotFoundException | URISyntaxException e) {
 			e.printStackTrace();
@@ -51,7 +50,7 @@ Then to parse the dictionary file, you simply need to register a dictionary usin
 For this example, I put the file DictionaryName.xml in the folder src/main/resources. The output for this program is the following line :
 
 ```
-	{Dictionary={languages={en, en_EN, en_GB, en_UK, en_US, en_CA}}}
+	{languages={en, en_US, en_GB}, messages={{code=Code_1, format=Static Message 1}, {code=Code_2, format=Dynamic Message : %s}}}
 ```
 
 This means that the parsed dictionary has been successfully created and the following java Locale : en, en_EN, en_GB, en_UK etc.. are supported by this dictionary.
@@ -60,7 +59,9 @@ If the dictionary format is different from above, you can still provide your own
 
 ```java
 	// The parser and the path has to be defined to avoid compilation errors
-	NotificationCenter.getInstance().getDictionaryContext().register(parser, path);
+	// parser: in charge of reading the file associated to the given path and creating the associated dictionary
+	// path: path leading to the dictionary file.
+	context.register(parser.parse(path));
 ```
 
 Until now, we can register dictionary from different type of file. But we cannot get access to the stored messages in order to display translated messages to the user.
@@ -71,27 +72,27 @@ To get messages, wee need to use a <code>MessageEvent</code>. This event provide
 
 ```java
 	public enum EMessageCode implements IMessageCode {
-	CODE_1, CODE_2;
-
-	@Override
-	public String value() {
-		return toString();
+		CODE_1, CODE_2;
+	
+		@Override
+		public String value() {
+			return toString();
+		}
 	}
-}
 ```
 
 Now, to get a translated message, we simply need to call the method <code>getMessage(IMessageEvent event)</code> and display the result :
 
 ```java
 	public static void main(String[] args) {
-			INotificationCenter center = NotificationCenter.getInstance();
-			try {
-				center.getDictionaryContext().register(Paths.get(Main.class.getResource("/DictionaryName.xml").toURI()));
-				System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_1)));
-			} catch (FileNotFoundException | URISyntaxException e) {
-				e.printStackTrace();
-			}
+		IDictionaryContext context = DictionaryContext.getInstance();
+		try {
+			context.register(Paths.get(Main.class.getResource("/DictionaryName.xml").toURI()));
+			System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_1)));
+		} catch (FileNotFoundException | URISyntaxException e) {
+			e.printStackTrace();
 		}
+	}
 ```
 
 The output for this program is the following line :
@@ -104,9 +105,9 @@ I bet you remark for the second message in the dictionary, I put a "%s". This is
 
 ```java
 	public static void main(String[] args) {
-		INotificationCenter center = NotificationCenter.getInstance();
+		IDictionaryContext context = DictionaryContext.getInstance();
 		try {
-			center.getDictionaryContext().register(Paths.get(Main.class.getResource("/English.xml").toURI()));
+			context.register(Paths.get(Main.class.getResource("/DictionaryName.xml").toURI()));
 			System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_2, "Hello world")));
 		} catch (FileNotFoundException | URISyntaxException e) {
 			e.printStackTrace();
@@ -125,7 +126,6 @@ We can do exactly the same with a French dictionary :
 ```xml
 	<?xml version="1.0" encoding="UTF-8"?>
 	<dictionary>
-		<name>French</name>
 		<version>1.0</version>
 		<locales>
 			<locale>fr</locale>
@@ -148,11 +148,11 @@ We can do exactly the same with a French dictionary :
 And here is the main method :
 
 ``` java
-public static void main(String[] args) {
-		INotificationCenter center = NotificationCenter.getInstance();
+	public static void main(String[] args) {
+		IDictionaryContext context = DictionaryContext.getInstance();
 		try {
-			center.getDictionaryContext().register(Paths.get(Main.class.getResource("/English.xml").toURI()));
-			center.getDictionaryContext().register(Paths.get(Main.class.getResource("/French.xml").toURI()));
+			context.register(Paths.get(Main.class.getResource("/English.xml").toURI()));
+			context.register(Paths.get(Main.class.getResource("/French.xml").toURI()));
 			System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_1)));
 			System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_2, "Hello world")));
 			System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.FRENCH, EMessageCode.CODE_1)));

@@ -6,10 +6,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
-import fr.pederobien.dictionary.exceptions.AnyRegisteredDictionaryException;
 import fr.pederobien.dictionary.exceptions.DictionaryNotFoundException;
 import fr.pederobien.dictionary.exceptions.SecondTryMessageNotFoundException;
-import fr.pederobien.dictionary.impl.DefaultDictionaryParser;
 
 public interface IDictionaryContext {
 
@@ -20,8 +18,6 @@ public interface IDictionaryContext {
 	 * @param parser The parser used to create a dictionary.
 	 * 
 	 * @return This dictionary context to register dictionaries easier.
-	 * 
-	 * @see DefaultDictionaryParser
 	 */
 	IDictionaryContext setParser(IDictionaryParser parser);
 
@@ -36,27 +32,15 @@ public interface IDictionaryContext {
 	IDictionaryContext register(IDictionary dictionary);
 
 	/**
-	 * Parse the file associated to the given path using the specified parser, and register it for this context.
-	 * 
-	 * @param parser The parser used to create a dictionary.
-	 * @param path   The path to the dictionary file.
-	 * 
-	 * @return This parsed dictionary.
-	 * 
-	 * @throws FileNotFoundException If the path does not represent a file.
-	 */
-	IDictionary register(IDictionaryParser parser, Path path) throws FileNotFoundException;
-
-	/**
 	 * Parse the file associated to the given path using the parser specified by {@link #setParser(IDictionaryParser)}.
 	 * 
 	 * @param path The path to the dictionary file.
 	 * 
-	 * @return The parsed dictionary if a parser has been furnished, null otherwise.
+	 * @return This dictionary context to register dictionaries easier.
 	 * 
 	 * @throws FileNotFoundException If the path does not represent a file.
 	 */
-	IDictionary register(Path path) throws FileNotFoundException;
+	IDictionaryContext register(Path path) throws FileNotFoundException;
 
 	/**
 	 * Unregister the given dictionary for the given plugin. If this dictionary is already concatenated to another one, then only its
@@ -97,7 +81,7 @@ public interface IDictionaryContext {
 	 * @see IMessageCode
 	 * @see IDictionary
 	 * 
-	 * @throws AnyRegisteredDictionaryException  if there is any registered dictionary for plugin from the given event.
+	 * @throws DictionaryNotFoundException       if there is no registered dictionary for the locale.
 	 * @throws SecondTryMessageNotFoundException if any has been found in the player's dictionary and in the English dictionary.
 	 */
 	String getMessage(IMessageEvent event);

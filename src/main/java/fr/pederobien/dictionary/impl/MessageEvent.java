@@ -57,9 +57,9 @@ public class MessageEvent implements IMessageEvent {
 	@Override
 	public String toString() {
 		StringJoiner joiner = new StringJoiner(", ", "{MessageEvent=", "}");
-		joiner.add("{Locale=" + locale + "}");
-		joiner.add("{Code=" + getCode() + "}");
-		StringJoiner joinerBis = new StringJoiner(" ", "{Args={", "}}");
+		joiner.add("Locale=" + locale + "");
+		joiner.add("Code=" + getCode() + "");
+		StringJoiner joinerBis = new StringJoiner(" ", "Args={", "}");
 		for (Object arg : getArgs())
 			joinerBis.add(arg.toString());
 		return joiner.add(joinerBis.toString()).toString();

@@ -2,26 +2,19 @@ package fr.pederobien.dictionary.exceptions;
 
 import java.util.Locale;
 
-import fr.pederobien.dictionary.interfaces.IMessageEvent;
-
-public class DictionaryNotFoundException extends MessageEventException {
+public class DictionaryNotFoundException extends DictionaryException {
 	private static final long serialVersionUID = 1L;
 	private Locale locale;
 
-	public DictionaryNotFoundException(IMessageEvent event, Locale locale) {
-		super(event);
+	public DictionaryNotFoundException(Locale locale) {
+		super("There is no dictionary registered for locale " + locale.getDisplayLanguage(), null);
 		this.locale = locale;
 	}
 
 	/**
-	 * @return The locale used as key to find the dictionary.
+	 * @return The locale used to find a dictionary.
 	 */
 	public Locale getLocale() {
 		return locale;
-	}
-
-	@Override
-	public String getMessage() {
-		return "No Dictionary found associated to locale " + getLocale();
 	}
 }

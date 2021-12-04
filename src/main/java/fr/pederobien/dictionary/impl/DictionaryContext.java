@@ -18,15 +18,26 @@ import fr.pederobien.dictionary.interfaces.IMessage;
 import fr.pederobien.dictionary.interfaces.IMessageEvent;
 
 public class DictionaryContext implements IDictionaryContext {
-	private static final IDictionaryParser DEFAULT_PARSER = new DefaultDictionaryParser();
+	private static final IDictionaryParser DEFAULT_PARSER = new XmlDictionaryParser();
 
 	private Map<Locale, IDictionary> dictionaries, unmodifiableDictionaries;
 	private IDictionaryParser parser;
 
-	public DictionaryContext() {
+	private DictionaryContext() {
 		dictionaries = new HashMap<Locale, IDictionary>();
 		unmodifiableDictionaries = Collections.unmodifiableMap(dictionaries);
 		parser = DEFAULT_PARSER;
+	}
+
+	/**
+	 * @return The unique instance for this dictionary context.
+	 */
+	public static IDictionaryContext getInstance() {
+		return SingletonHolder.CONTEXT;
+	}
+
+	private static class SingletonHolder {
+		private static final DictionaryContext CONTEXT = new DictionaryContext();
 	}
 
 	@Override
@@ -52,15 +63,8 @@ public class DictionaryContext implements IDictionaryContext {
 	}
 
 	@Override
-	public IDictionary register(IDictionaryParser parser, Path path) throws FileNotFoundException {
-		IDictionary dictionary = parser.parse(path);
-		register(dictionary);
-		return dictionary;
-	}
-
-	@Override
-	public IDictionary register(Path path) throws FileNotFoundException {
-		return register(getParser(), path);
+	public IDictionaryContext register(Path path) throws FileNotFoundException {
+		return register(getParser().parse(path));
 	}
 
 	@Override
@@ -105,9 +109,9 @@ public class DictionaryContext implements IDictionaryContext {
 			try {
 				return secondDictionary.getMessage(event);
 			} catch (MessageNotFoundException e1) {
-				throw new SecondTryMessageNotFoundException(event, dictionary, secondDictionary, event.getLocale(), Locale.ENGLISH);
+				throw new SecondTryMessageNotFoundException(dictionary, event.getLocale(), event.getCode());
 			} catch (NullPointerException e1) {
-				throw new DictionaryNotFoundException(new MessageEvent(Locale.ENGLISH, event.getCode(), event.getArgs()), Locale.ENGLISH);
+				throw new DictionaryNotFoundException(Locale.ENGLISH);
 			}
 		}
 	}

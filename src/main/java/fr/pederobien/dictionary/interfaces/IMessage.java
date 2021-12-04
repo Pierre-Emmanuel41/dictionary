@@ -16,4 +16,9 @@ public interface IMessage {
 	 * @return The message associated to the key.
 	 */
 	String getMessage(Object... args);
+
+	/**
+	 * @return The underlying format to display a message.
+	 */
+	String getFormat();
 }
