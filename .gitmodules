@@ -1,4 +1,1 @@
-[submodule "persistence"]
-	path = persistence
-	url = https://github.com/Pierre-Emmanuel41/persistence.git
-	branch = master
+
