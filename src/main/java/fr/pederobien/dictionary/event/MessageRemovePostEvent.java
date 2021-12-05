@@ -1,5 +1,8 @@
 package fr.pederobien.dictionary.event;
 
+import java.util.Locale;
+import java.util.StringJoiner;
+
 import fr.pederobien.dictionary.interfaces.IDictionary;
 import fr.pederobien.dictionary.interfaces.IMessage;
 
@@ -22,5 +25,16 @@ public class MessageRemovePostEvent extends DictionaryEvent {
 	 */
 	public IMessage getMessage() {
 		return message;
+	}
+
+	@Override
+	public String toString() {
+		StringJoiner joiner = new StringJoiner(", ", "{", "}");
+		StringJoiner localeJoiner = new StringJoiner(", ", "languages={", "}");
+		for (Locale locale : getDictionary().getLocales())
+			localeJoiner.add(locale.toString());
+		joiner.add(localeJoiner.toString());
+		joiner.add("message=" + getMessage());
+		return String.format("%s_%s", getName(), joiner);
 	}
 }

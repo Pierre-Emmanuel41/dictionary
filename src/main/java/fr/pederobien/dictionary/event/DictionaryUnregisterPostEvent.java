@@ -1,5 +1,8 @@
 package fr.pederobien.dictionary.event;
 
+import java.util.Locale;
+import java.util.StringJoiner;
+
 import fr.pederobien.dictionary.interfaces.IDictionary;
 import fr.pederobien.dictionary.interfaces.IDictionaryContext;
 
@@ -22,5 +25,13 @@ public class DictionaryUnregisterPostEvent extends DictionaryEvent {
 	 */
 	public IDictionaryContext getContext() {
 		return context;
+	}
+
+	@Override
+	public String toString() {
+		StringJoiner joiner = new StringJoiner(", ", "languages={", "}");
+		for (Locale locale : getDictionary().getLocales())
+			joiner.add(locale.toString());
+		return String.format("%s_%s", getName(), joiner);
 	}
 }
