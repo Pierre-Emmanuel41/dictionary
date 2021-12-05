@@ -13,6 +13,7 @@ public class XmlDictionaryParser implements IDictionaryParser {
 
 	public XmlDictionaryParser() {
 		this.persistence = Persistences.xmlPersistence();
+		persistence.register(persistence.adapt(new DictionarySerializer()));
 	}
 
 	@Override
@@ -20,5 +21,12 @@ public class XmlDictionaryParser implements IDictionaryParser {
 		IDictionary dictionary = new Dictionary();
 		persistence.deserialize(dictionary, path.toString());
 		return dictionary;
+	}
+
+	/**
+	 * @return The persistence used to serialize or deserialize the content of a dictionary.
+	 */
+	public XmlPersistence<IDictionary> getPersistence() {
+		return persistence;
 	}
 }
