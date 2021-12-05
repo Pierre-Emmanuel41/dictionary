@@ -1,6 +1,6 @@
 package fr.pederobien.dictionary.impl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -31,7 +31,10 @@ public class Dictionary implements IDictionary, IEventListener {
 	private Map<IMessageCode, IMessage> messages;
 
 	public Dictionary(Locale... locales) {
-		this.locales = Arrays.asList(locales);
+		this.locales = new ArrayList<Locale>();
+		for (Locale locale : locales)
+			this.locales.add(locale);
+
 		messages = new LinkedHashMap<IMessageCode, IMessage>();
 		EventManager.registerListener(this);
 	}

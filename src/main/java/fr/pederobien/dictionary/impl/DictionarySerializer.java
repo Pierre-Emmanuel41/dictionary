@@ -1,7 +1,5 @@
 package fr.pederobien.dictionary.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import org.w3c.dom.Element;
@@ -53,11 +51,8 @@ public class DictionarySerializer extends AbstractXmlSerializer<IDictionary> {
 	public boolean deserialize(IDictionary element, Element root) {
 		// Getting dictionary's locales
 		NodeList locales = getElementsByTagName(root, DictionaryXmlTag.LOCALE);
-		List<Locale> list = new ArrayList<Locale>();
 		for (int i = 0; i < locales.getLength(); i++)
-			list.add(Locale.forLanguageTag(locales.item(i).getChildNodes().item(0).getNodeValue()));
-
-		element.getLocales().addAll(list);
+			element.getLocales().add(Locale.forLanguageTag(locales.item(i).getChildNodes().item(0).getNodeValue()));
 
 		// Getting dictionary's messages
 		NodeList messages = getElementsByTagName(root, DictionaryXmlTag.MESSAGE);
