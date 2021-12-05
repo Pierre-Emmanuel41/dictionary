@@ -3,4 +3,4 @@
 	path = persistence
 	url = https://github.com/Pierre-Emmanuel41/persistence.git
 	update = rebase
-	branch = master
+	branch = 2.0-SNAPSHOT
