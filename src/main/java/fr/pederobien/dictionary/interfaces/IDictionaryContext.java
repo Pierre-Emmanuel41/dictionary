@@ -6,6 +6,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.pederobien.dictionary.event.DictionaryRegisterPostEvent;
+import fr.pederobien.dictionary.event.DictionaryUnregisterPostEvent;
 import fr.pederobien.dictionary.exceptions.DictionaryNotFoundException;
 import fr.pederobien.dictionary.exceptions.SecondTryMessageNotFoundException;
 
@@ -23,7 +25,7 @@ public interface IDictionaryContext {
 
 	/**
 	 * Register the given dictionary for its locales. If a dictionary is already registered for locales supported by the given
-	 * dictionary, the new dictionary is concatenated to the old one.
+	 * dictionary, the new dictionary is concatenated to the old one. This method should throw a {@link DictionaryRegisterPostEvent}.
 	 * 
 	 * @param dictionary The dictionary used to get message when an {@link IMessageEvent} arrives.
 	 * 
@@ -32,7 +34,8 @@ public interface IDictionaryContext {
 	IDictionaryContext register(IDictionary dictionary);
 
 	/**
-	 * Parse the file associated to the given path using the parser specified by {@link #setParser(IDictionaryParser)}.
+	 * Parse the file associated to the given path using the parser specified by {@link #setParser(IDictionaryParser)}. This method
+	 * should throw a a {@link DictionaryRegisterPostEvent}
 	 * 
 	 * @param path The path to the dictionary file.
 	 * 
@@ -43,8 +46,8 @@ public interface IDictionaryContext {
 	IDictionaryContext register(Path path) throws FileNotFoundException;
 
 	/**
-	 * Unregister the given dictionary for the given plugin. If this dictionary is already concatenated to another one, then only its
-	 * messages are removed from the global dictionary.
+	 * Unregister the given dictionary. If this dictionary is already concatenated to another one, then only its messages are removed
+	 * from the global dictionary. This method should throw a {@link DictionaryUnregisterPostEvent}
 	 * 
 	 * @param dictionary The dictionary to remove.
 	 * 

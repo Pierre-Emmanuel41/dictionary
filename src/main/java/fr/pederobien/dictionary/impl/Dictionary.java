@@ -12,6 +12,9 @@ import java.util.MissingFormatArgumentException;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
+import fr.pederobien.dictionary.event.DictionaryUnregisterPostEvent;
+import fr.pederobien.dictionary.event.MessageAddPostEvent;
+import fr.pederobien.dictionary.event.MessageRemovePostEvent;
 import fr.pederobien.dictionary.exceptions.MessageNotFoundException;
 import fr.pederobien.dictionary.exceptions.MessageRegisteredException;
 import fr.pederobien.dictionary.exceptions.NotEnoughArgumentsException;
@@ -19,14 +22,18 @@ import fr.pederobien.dictionary.interfaces.IDictionary;
 import fr.pederobien.dictionary.interfaces.IMessage;
 import fr.pederobien.dictionary.interfaces.IMessageCode;
 import fr.pederobien.dictionary.interfaces.IMessageEvent;
+import fr.pederobien.utils.event.EventHandler;
+import fr.pederobien.utils.event.EventManager;
+import fr.pederobien.utils.event.IEventListener;
 
-public class Dictionary implements IDictionary {
+public class Dictionary implements IDictionary, IEventListener {
 	private List<Locale> locales;
 	private Map<IMessageCode, IMessage> messages;
 
 	public Dictionary(Locale... locales) {
 		this.locales = Arrays.asList(locales);
 		messages = new LinkedHashMap<IMessageCode, IMessage>();
+		EventManager.registerListener(this);
 	}
 
 	@Override
@@ -59,12 +66,15 @@ public class Dictionary implements IDictionary {
 			throw new MessageRegisteredException(this, message.getCode());
 
 		messages.put(message.getCode(), message);
+		EventManager.callEvent(new MessageAddPostEvent(this, message));
 		return this;
 	}
 
 	@Override
 	public IDictionary unregister(IMessageCode code) {
-		messages.remove(code);
+		IMessage message = messages.remove(code);
+		if (message != null)
+			EventManager.callEvent(new MessageRemovePostEvent(this, message));
 		return this;
 	}
 
@@ -85,5 +95,13 @@ public class Dictionary implements IDictionary {
 			messageJoiner.add("{" + entry.getValue().toString() + "}");
 		global.add(messageJoiner.toString());
 		return global.toString();
+	}
+
+	@EventHandler
+	private void onDictionaryUnregistered(DictionaryUnregisterPostEvent event) {
+		if (!event.getDictionary().equals(this))
+			return;
+
+		EventManager.unregisterListener(this);
 	}
 }

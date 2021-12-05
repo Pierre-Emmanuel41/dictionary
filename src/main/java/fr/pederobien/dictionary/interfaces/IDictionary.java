@@ -3,6 +3,8 @@ package fr.pederobien.dictionary.interfaces;
 import java.util.List;
 import java.util.Locale;
 
+import fr.pederobien.dictionary.event.MessageAddPostEvent;
+import fr.pederobien.dictionary.event.MessageRemovePostEvent;
 import fr.pederobien.dictionary.exceptions.MessageNotFoundException;
 import fr.pederobien.dictionary.exceptions.NotEnoughArgumentsException;
 
@@ -27,7 +29,7 @@ public interface IDictionary {
 	String getMessage(IMessageEvent event);
 
 	/**
-	 * Register the given message to this dictionary.
+	 * Register the given message to this dictionary. This method should throw a {@link MessageAddPostEvent}.
 	 * 
 	 * @param message The message to store.
 	 * 
@@ -36,7 +38,8 @@ public interface IDictionary {
 	IDictionary register(IMessage message);
 
 	/**
-	 * Unregister the message associated to the given message code if it exist.
+	 * Unregister the message associated to the given message code if it exist. If there is a message registered for the given code,
+	 * this method should throw a {@link MessageRemovePostEvent}
 	 * 
 	 * @param code The code used to remove the associated message.
 	 * 

@@ -8,6 +8,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.pederobien.dictionary.event.DictionaryRegisterPostEvent;
+import fr.pederobien.dictionary.event.DictionaryUnregisterPostEvent;
 import fr.pederobien.dictionary.exceptions.DictionaryNotFoundException;
 import fr.pederobien.dictionary.exceptions.MessageNotFoundException;
 import fr.pederobien.dictionary.exceptions.SecondTryMessageNotFoundException;
@@ -16,16 +18,16 @@ import fr.pederobien.dictionary.interfaces.IDictionaryContext;
 import fr.pederobien.dictionary.interfaces.IDictionaryParser;
 import fr.pederobien.dictionary.interfaces.IMessage;
 import fr.pederobien.dictionary.interfaces.IMessageEvent;
+import fr.pederobien.utils.event.EventManager;
 
 public class DictionaryContext implements IDictionaryContext {
 	private static final IDictionaryParser DEFAULT_PARSER = new XmlDictionaryParser();
 
-	private Map<Locale, IDictionary> dictionaries, unmodifiableDictionaries;
+	private Map<Locale, IDictionary> dictionaries;
 	private IDictionaryParser parser;
 
 	private DictionaryContext() {
 		dictionaries = new HashMap<Locale, IDictionary>();
-		unmodifiableDictionaries = Collections.unmodifiableMap(dictionaries);
 		parser = DEFAULT_PARSER;
 	}
 
@@ -54,11 +56,10 @@ public class DictionaryContext implements IDictionaryContext {
 			if (localDictionary != null)
 				for (IMessage message : dictionary.getMessages())
 					localDictionary.register(message);
-			else {
+			else
 				dictionaries.put(locale, dictionary);
-				unmodifiableDictionaries = Collections.unmodifiableMap(dictionaries);
-			}
 		}
+		EventManager.callEvent(new DictionaryRegisterPostEvent(dictionary, this));
 		return this;
 	}
 
@@ -77,11 +78,10 @@ public class DictionaryContext implements IDictionaryContext {
 			for (IMessage message : dictionary.getMessages())
 				localDictionary.unregister(message.getCode());
 
-			if (localDictionary.getMessages().isEmpty()) {
+			if (localDictionary.getMessages().isEmpty())
 				dictionaries.remove(locale);
-				unmodifiableDictionaries = Collections.unmodifiableMap(dictionaries);
-			}
 		}
+		EventManager.callEvent(new DictionaryUnregisterPostEvent(dictionary, this));
 		return this;
 	}
 
@@ -93,7 +93,7 @@ public class DictionaryContext implements IDictionaryContext {
 
 	@Override
 	public Map<Locale, IDictionary> getDictionaries() {
-		return unmodifiableDictionaries;
+		return Collections.unmodifiableMap(dictionaries);
 	}
 
 	@Override
