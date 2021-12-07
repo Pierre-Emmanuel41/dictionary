@@ -14,7 +14,7 @@ public interface IMessageEvent {
 	/**
 	 * @return The code used to get the associated {@link IMessage}.
 	 */
-	IMessageCode getCode();
+	ICode getCode();
 
 	/**
 	 * @return An array of arguments used for {@link IMessage#getMessage(String...)}.

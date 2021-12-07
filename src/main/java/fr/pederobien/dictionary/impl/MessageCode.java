@@ -1,8 +1,8 @@
 package fr.pederobien.dictionary.impl;
 
-import fr.pederobien.dictionary.interfaces.IMessageCode;
+import fr.pederobien.dictionary.interfaces.ICode;
 
-public class MessageCode implements IMessageCode {
+public class MessageCode implements ICode {
 	private String value;
 
 	/**
@@ -29,10 +29,10 @@ public class MessageCode implements IMessageCode {
 		if (this == obj)
 			return true;
 
-		if (!(obj instanceof IMessageCode))
+		if (!(obj instanceof ICode))
 			return false;
 
-		IMessageCode other = (IMessageCode) obj;
+		ICode other = (ICode) obj;
 		return value.equals(other.value());
 	}
 }

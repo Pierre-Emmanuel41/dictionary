@@ -8,7 +8,7 @@ import org.w3c.dom.NodeList;
 
 import fr.pederobien.dictionary.interfaces.IDictionary;
 import fr.pederobien.dictionary.interfaces.IMessage;
-import fr.pederobien.dictionary.interfaces.IMessageCode;
+import fr.pederobien.dictionary.interfaces.ICode;
 import fr.pederobien.persistence.impl.xml.AbstractXmlSerializer;
 
 public class DictionarySerializer extends AbstractXmlSerializer<IDictionary> {
@@ -58,7 +58,7 @@ public class DictionarySerializer extends AbstractXmlSerializer<IDictionary> {
 		NodeList messages = getElementsByTagName(root, DictionaryXmlTag.MESSAGE);
 		for (int i = 0; i < messages.getLength(); i++) {
 			Node code = getElementsByTagName((Element) messages.item(i), DictionaryXmlTag.MESSAGE_CODE).item(0);
-			IMessageCode dictionaryCode = new MessageCode(code.getChildNodes().item(0).getNodeValue());
+			ICode dictionaryCode = new MessageCode(code.getChildNodes().item(0).getNodeValue());
 			Node message = getElementsByTagName((Element) messages.item(i), DictionaryXmlTag.MESSAGE_VALUE).item(0);
 			String dictionaryMessage = message.getChildNodes().item(0).getNodeValue();
 			element.register(new Message(dictionaryCode, dictionaryMessage));

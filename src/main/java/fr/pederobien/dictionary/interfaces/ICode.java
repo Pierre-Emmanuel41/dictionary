@@ -1,6 +1,6 @@
 package fr.pederobien.dictionary.interfaces;
 
-public interface IMessageCode {
+public interface ICode {
 
 	/**
 	 * @return The value represented by this message code.

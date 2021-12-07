@@ -45,7 +45,7 @@ public interface IDictionary {
 	 * 
 	 * @return This dictionary to unregister messages easier.
 	 */
-	IDictionary unregister(IMessageCode code);
+	IDictionary unregister(ICode code);
 
 	/**
 	 * @return A list of all registered messages for this dictionary. This list is unmodifiable.

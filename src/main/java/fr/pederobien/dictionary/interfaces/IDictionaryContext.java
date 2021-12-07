@@ -81,7 +81,7 @@ public interface IDictionaryContext {
 	 * @param event The used to get a message stored in a dictionary.
 	 * @return The message associated to the message code.
 	 * 
-	 * @see IMessageCode
+	 * @see ICode
 	 * @see IDictionary
 	 * 
 	 * @throws DictionaryNotFoundException       if there is no registered dictionary for the locale.
