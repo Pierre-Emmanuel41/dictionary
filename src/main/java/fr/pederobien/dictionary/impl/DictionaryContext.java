@@ -26,20 +26,9 @@ public class DictionaryContext implements IDictionaryContext {
 	private Map<Locale, IDictionary> dictionaries;
 	private IDictionaryParser parser;
 
-	private DictionaryContext() {
+	public DictionaryContext() {
 		dictionaries = new HashMap<Locale, IDictionary>();
 		parser = DEFAULT_PARSER;
-	}
-
-	/**
-	 * @return The unique instance for this dictionary context.
-	 */
-	public static IDictionaryContext getInstance() {
-		return SingletonHolder.CONTEXT;
-	}
-
-	private static class SingletonHolder {
-		private static final DictionaryContext CONTEXT = new DictionaryContext();
 	}
 
 	@Override
