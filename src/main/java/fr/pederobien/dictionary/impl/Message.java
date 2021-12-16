@@ -1,10 +1,9 @@
 package fr.pederobien.dictionary.impl;
 
 import fr.pederobien.dictionary.interfaces.IMessage;
-import fr.pederobien.dictionary.interfaces.ICode;
 
 public class Message implements IMessage {
-	private ICode code;
+	private String code;
 	private String format;
 
 	/**
@@ -13,23 +12,13 @@ public class Message implements IMessage {
 	 * @param code   The message code.
 	 * @param format The message format.
 	 */
-	public Message(ICode code, String format) {
+	public Message(String code, String format) {
 		this.code = code;
 		this.format = format;
 	}
 
-	/**
-	 * Creates a message. A message is the association of a code and a format.
-	 * 
-	 * @param code   The message code.
-	 * @param format The message format.
-	 */
-	public Message(String code, String format) {
-		this(new MessageCode(code), format);
-	}
-
 	@Override
-	public ICode getCode() {
+	public String getCode() {
 		return code;
 	}
 

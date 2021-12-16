@@ -3,12 +3,11 @@ package fr.pederobien.dictionary.impl;
 import java.util.Locale;
 import java.util.StringJoiner;
 
-import fr.pederobien.dictionary.interfaces.ICode;
 import fr.pederobien.dictionary.interfaces.IMessageEvent;
 
 public class MessageEvent implements IMessageEvent {
 	private Locale locale;
-	private ICode code;
+	private String code;
 	private Object[] args;
 
 	/**
@@ -20,7 +19,7 @@ public class MessageEvent implements IMessageEvent {
 	 * 
 	 * @return A message event based on the given parameter.
 	 */
-	public MessageEvent(Locale locale, ICode code, Object... args) {
+	public MessageEvent(Locale locale, String code, Object... args) {
 		this.locale = locale;
 		this.code = code;
 		this.args = args;
@@ -35,7 +34,7 @@ public class MessageEvent implements IMessageEvent {
 	 * 
 	 * @return A message event based on the given parameter.
 	 */
-	public MessageEvent(ICode code, Object... args) {
+	public MessageEvent(String code, Object... args) {
 		this(Locale.ENGLISH, code, args);
 	}
 
@@ -45,7 +44,7 @@ public class MessageEvent implements IMessageEvent {
 	}
 
 	@Override
-	public ICode getCode() {
+	public String getCode() {
 		return code;
 	}
 

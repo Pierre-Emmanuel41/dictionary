@@ -5,7 +5,7 @@ public interface IMessage {
 	/**
 	 * @return The code associated to this message.
 	 */
-	ICode getCode();
+	String getCode();
 
 	/**
 	 * Get the message associated to the code returned by {@link #getCode()}. Some messages need to be dynamic. This method is used to

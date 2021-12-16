@@ -1,13 +1,12 @@
 package fr.pederobien.dictionary.exceptions;
 
 import fr.pederobien.dictionary.interfaces.IDictionary;
-import fr.pederobien.dictionary.interfaces.ICode;
 
 public class MessageNotFoundException extends DictionaryException {
 	private static final long serialVersionUID = 1L;
-	private ICode code;
+	private String code;
 
-	public MessageNotFoundException(IDictionary dictionary, ICode code) {
+	public MessageNotFoundException(IDictionary dictionary, String code) {
 		super("There is no message for code " + code, dictionary);
 		this.code = code;
 	}
@@ -15,7 +14,7 @@ public class MessageNotFoundException extends DictionaryException {
 	/**
 	 * @return The code used to get a message in a dictionary.
 	 */
-	public ICode getCode() {
+	public String getCode() {
 		return code;
 	}
 }

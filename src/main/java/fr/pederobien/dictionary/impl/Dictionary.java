@@ -20,7 +20,6 @@ import fr.pederobien.dictionary.exceptions.MessageRegisteredException;
 import fr.pederobien.dictionary.exceptions.NotEnoughArgumentsException;
 import fr.pederobien.dictionary.interfaces.IDictionary;
 import fr.pederobien.dictionary.interfaces.IMessage;
-import fr.pederobien.dictionary.interfaces.ICode;
 import fr.pederobien.dictionary.interfaces.IMessageEvent;
 import fr.pederobien.utils.event.EventHandler;
 import fr.pederobien.utils.event.EventManager;
@@ -28,14 +27,14 @@ import fr.pederobien.utils.event.IEventListener;
 
 public class Dictionary implements IDictionary, IEventListener {
 	private List<Locale> locales;
-	private Map<ICode, IMessage> messages;
+	private Map<String, IMessage> messages;
 
 	public Dictionary(Locale... locales) {
 		this.locales = new ArrayList<Locale>();
 		for (Locale locale : locales)
 			this.locales.add(locale);
 
-		messages = new LinkedHashMap<ICode, IMessage>();
+		messages = new LinkedHashMap<String, IMessage>();
 		EventManager.registerListener(this);
 	}
 
@@ -46,9 +45,9 @@ public class Dictionary implements IDictionary, IEventListener {
 
 	@Override
 	public String getMessage(IMessageEvent event) {
-		Iterator<Entry<ICode, IMessage>> iterator = messages.entrySet().iterator();
+		Iterator<Entry<String, IMessage>> iterator = messages.entrySet().iterator();
 		while (iterator.hasNext()) {
-			Entry<ICode, IMessage> entry = iterator.next();
+			Entry<String, IMessage> entry = iterator.next();
 			if (entry.getKey().equals(event.getCode())) {
 				try {
 					return entry.getValue().getMessage(event.getArgs());
@@ -74,7 +73,7 @@ public class Dictionary implements IDictionary, IEventListener {
 	}
 
 	@Override
-	public IDictionary unregister(ICode code) {
+	public IDictionary unregister(String code) {
 		IMessage message = messages.remove(code);
 		if (message != null)
 			EventManager.callEvent(new MessageRemovePostEvent(this, message));
@@ -94,7 +93,7 @@ public class Dictionary implements IDictionary, IEventListener {
 			localeJoiner.add(locale.toString());
 		global.add(localeJoiner.toString());
 		StringJoiner messageJoiner = new StringJoiner(", ", "messages={", "}");
-		for (Map.Entry<ICode, IMessage> entry : messages.entrySet())
+		for (Map.Entry<String, IMessage> entry : messages.entrySet())
 			messageJoiner.add("{" + entry.getValue().toString() + "}");
 		global.add(messageJoiner.toString());
 		return global.toString();
