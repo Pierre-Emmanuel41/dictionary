@@ -33,13 +33,11 @@ This API provides you the possibility to store dictionaries in files, to parse a
 
 Be careful, the value associated to the tag "locale" should correspond to the standard [IETF BCP 47](https://tools.ietf.org/html/bcp47) in order to be well interpreted by the java [Locale](https://docs.oracle.com/javase/7/docs/api/java/util/Locale.html) class (see forLanguageTag).
 
-Then to parse the dictionary file, you simply need to register a dictionary using its.
-
 ```java
 public static void main(String[] args) {
-	IDictionaryContext context = DictionaryContext.getInstance();
+	IDictionaryContext context = new DictionaryContext();
 	try {
-		context.register(Paths.get(Main.class.getResource("/DictionaryName.xml").toURI()));
+		context.register(Paths.get(Main.class.getResource("/Dictionary.xml").toURI()));
 		System.out.println(center.getDictionaryContext().getDictionary(Locale.ENGLISH).get());
 	} catch (FileNotFoundException | URISyntaxException e) {
 		e.printStackTrace();
@@ -47,13 +45,13 @@ public static void main(String[] args) {
 }
 ```
 
-For this example, I put the file DictionaryName.xml in the folder src/main/resources. The output for this program is the following line :
+For this example, I put the file Dictionary.xml in the folder src/main/resources. The output for this program is the following line :
 
 ```
 {languages={en, en_US, en_GB}, messages={{code=Code_1, format=Static Message 1}, {code=Code_2, format=Dynamic Message : %s}}}
 ```
 
-This means that the parsed dictionary has been successfully created and the following java Locale : en, en_EN, en_GB, en_UK etc.. are supported by this dictionary.
+This means that the dictionary has been successfully created and parsed, and is associated to the following java Locale : en, en_EN, en_GB, en_UK etc.. are supported by this dictionary.
 
 If the dictionary format is different from above, you can still provide your own dictionary parser :
 
@@ -63,6 +61,8 @@ If the dictionary format is different from above, you can still provide your own
 // path: path leading to the dictionary file.
 context.register(parser.parse(path));
 ```
+
+There are by default two different parser implemented for XML format: <code>XmlDictionaryParser</code> used to parse xml files registered on the system and the <code>JarXmlDictionaryParser</code> used to parse xml files registered in a jar file.  
 
 Until now, we can register dictionary from different type of file. But we cannot get access to the stored messages in order to display translated messages to the user.
 

@@ -11,15 +11,26 @@ import fr.pederobien.persistence.impl.xml.JarXmlPersistence;
 public class JarXmlDictionaryParser implements IDictionaryParser {
 	private JarXmlPersistence<IDictionary> persistence;
 
+	/**
+	 * Creates a parser for dictionaries saved with the XML format. This parser can parse XML files registered in a jar file.
+	 * 
+	 * @param jarPath The path leading to the jar file.
+	 */
 	public JarXmlDictionaryParser(Path jarPath) {
 		this.persistence = Persistences.jarXmlPersistence(jarPath);
 		persistence.register(persistence.adapt(new DictionarySerializer()));
 	}
 
+	/**
+	 * {@inheritDoc}.</br>
+	 * 
+	 * @param path The path to the dictionary file in the jar file..
+	 */
 	@Override
 	public IDictionary parse(Path path) throws FileNotFoundException {
 		IDictionary dictionary = new Dictionary();
-		persistence.deserialize(dictionary, path.toString());
+		if (!persistence.deserialize(dictionary, path.toString()))
+			throw new FileNotFoundException();
 		return dictionary;
 	}
 
