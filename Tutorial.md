@@ -71,13 +71,8 @@ Until now, we can register dictionary from different type of file. But we cannot
 To get messages, wee need to use a <code>MessageEvent</code>. This event provides all needed informations for the dictionary context, the dictionary and the stored messages. But the MessageEvent constructor need an IMessageCode as parameter so we need a class or an enumeration to implement this interface. For me, the best implementation is an enumeration. It stores each code associated to user messages. Below is the interface implementation.
 
 ```java
-public enum EMessageCode implements IMessageCode {
+public enum EMessageCode {
 	CODE_1, CODE_2;
-
-	@Override
-	public String value() {
-		return toString();
-	}
 }
 ```
 
@@ -85,10 +80,10 @@ Now, to get a translated message, we simply need to call the method <code>getMes
 
 ```java
 public static void main(String[] args) {
-	IDictionaryContext context = DictionaryContext.getInstance();
+	IDictionaryContext context = new DictionaryContext();
 	try {
-		context.register(Paths.get(Main.class.getResource("/DictionaryName.xml").toURI()));
-		System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_1)));
+		context.register(Paths.get(Main.class.getResource("/Dictionary.xml").toURI()));
+		System.out.println(context.getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_1.toString())));
 	} catch (FileNotFoundException | URISyntaxException e) {
 		e.printStackTrace();
 	}
@@ -105,10 +100,10 @@ I bet you remark for the second message in the dictionary, I put a "%s". This is
 
 ```java
 public static void main(String[] args) {
-	IDictionaryContext context = DictionaryContext.getInstance();
+	IDictionaryContext context = new DictionaryContext();
 	try {
-		context.register(Paths.get(Main.class.getResource("/DictionaryName.xml").toURI()));
-		System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_2, "Hello world")));
+		context.register(Paths.get(Main.class.getResource("/Dictionary.xml").toURI()));
+		System.out.println(context.getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_2.toString(), "Hello world")));
 	} catch (FileNotFoundException | URISyntaxException e) {
 		e.printStackTrace();
 	}
@@ -153,10 +148,10 @@ public static void main(String[] args) {
 	try {
 		context.register(Paths.get(Main.class.getResource("/English.xml").toURI()));
 		context.register(Paths.get(Main.class.getResource("/French.xml").toURI()));
-		System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_1)));
-		System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_2, "Hello world")));
-		System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.FRENCH, EMessageCode.CODE_1)));
-		System.out.println(center.getDictionaryContext().getMessage(new MessageEvent(Locale.FRENCH, EMessageCode.CODE_2, "Bonjour tout le monde")));
+		System.out.println(context.getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_1)));
+		System.out.println(context.getMessage(new MessageEvent(Locale.ENGLISH, EMessageCode.CODE_2, "Hello world")));
+		System.out.println(context.getMessage(new MessageEvent(Locale.FRENCH, EMessageCode.CODE_1)));
+		System.out.println(context.getMessage(new MessageEvent(Locale.FRENCH, EMessageCode.CODE_2, "Bonjour tout le monde")));
 	} catch (FileNotFoundException | URISyntaxException e) {
 		e.printStackTrace();
 	}
