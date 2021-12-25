@@ -65,7 +65,7 @@ public class Dictionary implements IDictionary, IEventListener {
 	public IDictionary register(IMessage message) {
 		IMessage registered = messages.get(message.getCode());
 		if (registered != null)
-			throw new MessageRegisteredException(this, message.getCode());
+			throw new MessageRegisteredException(this, message.getCode(), registered, message);
 
 		messages.put(message.getCode(), message);
 		EventManager.callEvent(new MessageAddPostEvent(this, message));

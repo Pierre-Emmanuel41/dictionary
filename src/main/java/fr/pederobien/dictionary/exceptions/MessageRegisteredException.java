@@ -1,20 +1,28 @@
 package fr.pederobien.dictionary.exceptions;
 
 import fr.pederobien.dictionary.interfaces.IDictionary;
+import fr.pederobien.dictionary.interfaces.IMessage;
 
 public class MessageRegisteredException extends DictionaryException {
 	private static final long serialVersionUID = 1L;
-	private String code;
+	private IMessage registered, newMessage;
 
-	public MessageRegisteredException(IDictionary dictionary, String code) {
-		super("A message is already registered for " + code, dictionary);
-		this.code = code;
+	public MessageRegisteredException(IDictionary dictionary, String code, IMessage registered, IMessage newMessage) {
+		super(String.format("A message is already registered for %s (registered: %s, new: %s)", code, registered, newMessage), dictionary);
+		this.registered = registered;
 	}
 
 	/**
-	 * @return The code used to register a message in a dictionary.
+	 * @return The message already registered in the dictionary.
 	 */
-	public String getCode() {
-		return code;
+	public IMessage getRegistered() {
+		return registered;
+	}
+
+	/**
+	 * @return The message that should be added to the dictionary.
+	 */
+	public IMessage getNewMessage() {
+		return newMessage;
 	}
 }
