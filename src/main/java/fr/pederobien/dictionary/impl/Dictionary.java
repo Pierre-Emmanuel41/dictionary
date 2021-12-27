@@ -21,21 +21,42 @@ import fr.pederobien.dictionary.exceptions.NotEnoughArgumentsException;
 import fr.pederobien.dictionary.interfaces.IDictionary;
 import fr.pederobien.dictionary.interfaces.IMessage;
 import fr.pederobien.dictionary.interfaces.IMessageEvent;
+import fr.pederobien.utils.event.Event;
 import fr.pederobien.utils.event.EventHandler;
 import fr.pederobien.utils.event.EventManager;
 import fr.pederobien.utils.event.IEventListener;
 
 public class Dictionary implements IDictionary, IEventListener {
+	private boolean silent;
 	private List<Locale> locales;
 	private Map<String, IMessage> messages;
 
-	public Dictionary(Locale... locales) {
+	private Dictionary(boolean silent, Locale... locales) {
+		this.silent = silent;
 		this.locales = new ArrayList<Locale>();
 		for (Locale locale : locales)
 			this.locales.add(locale);
 
 		messages = new LinkedHashMap<String, IMessage>();
 		EventManager.registerListener(this);
+	}
+
+	/**
+	 * Creates a dictionary associated to the given locales. This dictionary throw no dictionary events.
+	 * 
+	 * @param locales The locale associated to this dictionary.
+	 */
+	protected Dictionary(Locale... locales) {
+		this(true, locales);
+	}
+
+	/**
+	 * Creates a dictionary associated to the given locale. This dictionary throw dictionary events.
+	 * 
+	 * @param locales The locale associated to this dictionary.
+	 */
+	public Dictionary(Locale locale) {
+		this(false, locale);
 	}
 
 	@Override
@@ -68,7 +89,7 @@ public class Dictionary implements IDictionary, IEventListener {
 			throw new MessageRegisteredException(this, message.getCode(), registered, message);
 
 		messages.put(message.getCode(), message);
-		EventManager.callEvent(new MessageAddPostEvent(this, message));
+		callEvent(new MessageAddPostEvent(this, message));
 		return this;
 	}
 
@@ -76,7 +97,7 @@ public class Dictionary implements IDictionary, IEventListener {
 	public IDictionary unregister(String code) {
 		IMessage message = messages.remove(code);
 		if (message != null)
-			EventManager.callEvent(new MessageRemovePostEvent(this, message));
+			callEvent(new MessageRemovePostEvent(this, message));
 		return this;
 	}
 
@@ -113,5 +134,10 @@ public class Dictionary implements IDictionary, IEventListener {
 			return;
 
 		EventManager.unregisterListener(this);
+	}
+
+	private void callEvent(Event event) {
+		if (!silent)
+			EventManager.callEvent(event);
 	}
 }

@@ -23,8 +23,10 @@ public interface IDictionaryContext {
 	IDictionaryContext setParser(IDictionaryParser parser);
 
 	/**
-	 * Register the given dictionary for its locales. If a dictionary is already registered for locales supported by the given
-	 * dictionary, the new dictionary is concatenated to the old one. This method should throw a {@link DictionaryRegisterPostEvent}.
+	 * Register the given dictionary for its locales. If there is no dictionary registered for a local, then a clone associated to the
+	 * locale is created, but if a dictionary is already registered for a locale supported by the given dictionary, the new dictionary
+	 * is concatenated to the old one. This method should throw a {@link DictionaryRegisterPostEvent} when there was no dictionary
+	 * associated to a locale.
 	 * 
 	 * @param dictionary The dictionary used to get message when an {@link IMessageEvent} arrives.
 	 * 
