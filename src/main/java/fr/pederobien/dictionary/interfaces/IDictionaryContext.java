@@ -1,7 +1,6 @@
 package fr.pederobien.dictionary.interfaces;
 
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -43,7 +42,7 @@ public interface IDictionaryContext {
 	 * 
 	 * @throws FileNotFoundException If the path does not represent a file.
 	 */
-	IDictionaryContext register(Path path) throws FileNotFoundException;
+	IDictionaryContext register(String path) throws FileNotFoundException;
 
 	/**
 	 * Unregister the given dictionary. If this dictionary is already concatenated to another one, then only its messages are removed

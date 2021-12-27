@@ -27,9 +27,9 @@ public class JarXmlDictionaryParser implements IDictionaryParser {
 	 * @param path The path to the dictionary file in the jar file..
 	 */
 	@Override
-	public IDictionary parse(Path path) throws FileNotFoundException {
+	public IDictionary parse(String path) throws FileNotFoundException {
 		IDictionary dictionary = new Dictionary();
-		if (!persistence.deserialize(dictionary, path.toString()))
+		if (!persistence.deserialize(dictionary, path))
 			throw new FileNotFoundException();
 		return dictionary;
 	}

@@ -1,7 +1,6 @@
 package fr.pederobien.dictionary.impl;
 
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -53,7 +52,7 @@ public class DictionaryContext implements IDictionaryContext {
 	}
 
 	@Override
-	public IDictionaryContext register(Path path) throws FileNotFoundException {
+	public IDictionaryContext register(String path) throws FileNotFoundException {
 		return register(getParser().parse(path));
 	}
 
