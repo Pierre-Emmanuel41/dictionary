@@ -51,4 +51,12 @@ public interface IDictionary {
 	 * @return A list of all registered messages for this dictionary. This list is unmodifiable.
 	 */
 	List<IMessage> getMessages();
+
+	/**
+	 * Clone this dictionary. It creates a message list associated to the given locale. The returned dictionary keep the reference to
+	 * the message registered in this dictionary.
+	 * 
+	 * @return A new dictionary.
+	 */
+	IDictionary clone(Locale locale);
 }

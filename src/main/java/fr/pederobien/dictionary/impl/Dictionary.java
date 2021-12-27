@@ -86,6 +86,14 @@ public class Dictionary implements IDictionary, IEventListener {
 	}
 
 	@Override
+	public IDictionary clone(Locale locale) {
+		IDictionary dictionary = new Dictionary(locale);
+		for (IMessage message : messages.values())
+			dictionary.register(message);
+		return dictionary;
+	}
+
+	@Override
 	public String toString() {
 		StringJoiner global = new StringJoiner(", ", "{", "}");
 		StringJoiner localeJoiner = new StringJoiner(", ", "languages={", "}");

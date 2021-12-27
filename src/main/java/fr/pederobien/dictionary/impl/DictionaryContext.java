@@ -45,7 +45,7 @@ public class DictionaryContext implements IDictionaryContext {
 				for (IMessage message : dictionary.getMessages())
 					localDictionary.register(message);
 			else
-				dictionaries.put(locale, dictionary);
+				dictionaries.put(locale, dictionary.clone(locale));
 		}
 		EventManager.callEvent(new DictionaryRegisterPostEvent(dictionary, this));
 		return this;
