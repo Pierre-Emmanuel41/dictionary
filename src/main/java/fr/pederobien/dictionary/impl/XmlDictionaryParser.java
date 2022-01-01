@@ -1,7 +1,5 @@
 package fr.pederobien.dictionary.impl;
 
-import java.io.FileNotFoundException;
-
 import fr.pederobien.dictionary.interfaces.IDictionary;
 import fr.pederobien.dictionary.interfaces.IDictionaryParser;
 import fr.pederobien.persistence.impl.Persistences;
@@ -19,10 +17,9 @@ public class XmlDictionaryParser implements IDictionaryParser {
 	}
 
 	@Override
-	public IDictionary parse(String path) throws FileNotFoundException {
+	public IDictionary parse(String path) throws Exception {
 		IDictionary dictionary = new Dictionary();
-		if (!persistence.deserialize(dictionary, path))
-			throw new FileNotFoundException();
+		persistence.deserialize(dictionary, path);
 		return dictionary;
 	}
 

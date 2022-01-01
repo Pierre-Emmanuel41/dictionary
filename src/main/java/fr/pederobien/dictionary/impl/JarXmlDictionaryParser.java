@@ -1,6 +1,5 @@
 package fr.pederobien.dictionary.impl;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Path;
 
 import fr.pederobien.dictionary.interfaces.IDictionary;
@@ -27,10 +26,9 @@ public class JarXmlDictionaryParser implements IDictionaryParser {
 	 * @param path The path to the dictionary file in the jar file..
 	 */
 	@Override
-	public IDictionary parse(String path) throws FileNotFoundException {
+	public IDictionary parse(String path) throws Exception {
 		IDictionary dictionary = new Dictionary();
-		if (!persistence.deserialize(dictionary, path))
-			throw new FileNotFoundException();
+		persistence.deserialize(dictionary, path);
 		return dictionary;
 	}
 
