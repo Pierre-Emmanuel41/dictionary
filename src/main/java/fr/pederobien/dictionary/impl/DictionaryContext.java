@@ -92,6 +92,13 @@ public class DictionaryContext implements IDictionaryContext {
 		try {
 			return dictionary.getMessage(event);
 		} catch (MessageNotFoundException | NullPointerException e) {
+			// If the initial local is English, then no need to go further
+			if (event.getLocale() == Locale.ENGLISH) {
+				if (e instanceof MessageNotFoundException)
+					throw new MessageNotFoundException(dictionary, event.getCode());
+				else
+					throw new NullPointerException(e.getMessage());
+			}
 
 			// Dictionary that contains messages in English
 			IDictionary secondDictionary = dictionaries.get(Locale.ENGLISH);
