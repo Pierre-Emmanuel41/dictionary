@@ -23,7 +23,7 @@ public class MessageRegisteredException extends DictionaryException {
 			localJoiner.add(locale.toLanguageTag());
 
 		String format = "A message is already registered for %s in dictionary=%s%n(registered: %s, new: %s)";
-		return String.format(format, getRegistered().getCode(), localJoiner, getRegistered(), getNewMessage());
+		return String.format(format, getRegistered().getCode(), localJoiner, getRegistered().getFormat(), getNewMessage().getFormat());
 	}
 
 	/**
