@@ -97,7 +97,7 @@ public class DictionaryContext implements IDictionaryContext {
 				if (e instanceof MessageNotFoundException)
 					throw new MessageNotFoundException(dictionary, event.getCode());
 				else
-					throw new NullPointerException(e.getMessage());
+					throw e;
 			}
 
 			// Dictionary that contains messages in English

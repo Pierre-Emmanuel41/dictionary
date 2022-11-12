@@ -69,7 +69,7 @@ public class Dictionary implements IDictionary, IEventListener {
 		Iterator<Entry<String, IMessage>> iterator = messages.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Entry<String, IMessage> entry = iterator.next();
-			if (entry.getKey().equals(event.getCode())) {
+			if (entry.getKey().equals(event.getCode().getCode())) {
 				try {
 					return entry.getValue().getMessage(event.getArgs());
 				} catch (MissingFormatArgumentException e) {
